@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faMagnifyingGlass,
+  // faMagnifyingGlass,
   faCartShopping,
   faBars,
   faUser,
@@ -129,7 +129,7 @@ const NavBar = () => {
 
           {/* Toggle for small devices */}
           <MotionLink
-            className="text-gray-700 no-underline"
+            className={`${isDarkMode ? "text-white" : "text-gray-900"}`}
             onClick={() => setOpen(!open)}
           >
             <FontAwesomeIcon
@@ -190,21 +190,20 @@ const NavBar = () => {
               >
                 Sign/Login
               </MotionLink>
+              {/* User Icon */}
+              <MotionLink
+                to="/authentication"
+                className="block text-xl lg:hidden sm:text-base md:text-xl"
+              >
+                <FontAwesomeIcon
+                  icon={faUser}
+                  className={`${
+                    isDarkMode ? "text-gray-200" : "text-gray-800"
+                  } transition-colors duration-300`}
+                />
+              </MotionLink>
             </>
           )}
-
-          {/* User Icon */}
-          <MotionLink
-            to="/user"
-            className="block text-xl lg:hidden sm:text-base md:text-xl"
-          >
-            <FontAwesomeIcon
-              icon={faUser}
-              className={`${
-                isDarkMode ? "text-gray-200" : "text-gray-800"
-              } transition-colors duration-300`}
-            />
-          </MotionLink>
 
           {/* Cart */}
           <MotionLink
@@ -228,7 +227,7 @@ const NavBar = () => {
           </MotionLink>
 
           {/* Search */}
-          <MotionLink
+          {/* <MotionLink
             to="/search"
             aria-label="Search"
             initial={{ y: "-20vw" }}
@@ -240,7 +239,7 @@ const NavBar = () => {
             } hover:text-blue-600 transition-colors duration-300`}
           >
             <FontAwesomeIcon icon={faMagnifyingGlass} />
-          </MotionLink>
+          </MotionLink> */}
         </div>
       </nav>
 

@@ -3,21 +3,33 @@ import NavBar from "../../components/NavBar/NavBar";
 import { motion } from "framer-motion";
 import FooterSection from "../../components/Footer/FooterSection";
 import { useCart } from "../../components/CartContext/CartContext";
+import { useTheme } from "../../context/ThemeContext";
 
 const CartPage = () => {
-  const { cart, addToCart, removeFromCart, removeItemCompletely, getTotalItems } = useCart();
+  const { isDarkMode } = useTheme();
+  const {
+    cart,
+    addToCart,
+    removeFromCart,
+    removeItemCompletely,
+    getTotalItems,
+  } = useCart();
   return (
     <>
       <NavBar />
 
       {/* Cart Heading Section */}
       <motion.section
-        className="body-container relative top-1 bg-gray-200 mb-2 p-12"
+        className={`${
+          isDarkMode
+            ? "bg-gradient-to-r from-[#006663] to-[#111111] text-white"
+            : " bg-gradient-to-r from-[#ff7e5f] to-[#feb47b]"
+        } body-container relative top-1 mb-2 p-12`}
         initial={{ opacity: 0, y: 350 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        <div className="collection-content container bg-gray-200 flex flex-col items-center justify-center text-center p-6 md:p-16 lg:p-32 gap-7">
+        <div className="container flex flex-col items-center justify-center p-6 text-center collection-content md:p-16 lg:p-32 gap-7">
           <motion.h1
             className="text-4xl md:text-6xl lg:text-7xl"
             initial={{ opacity: 0, y: 100 }}
@@ -39,54 +51,58 @@ const CartPage = () => {
 
       {/* Cart Items Section */}
 
-      <div className="container mx-auto p-4 text-center ">
-        <h2 className="text-2xl font-bold mb-4">Cart Items</h2>
-        <p className="text-gray-600 mb-6 font-sans">
-          You have {getTotalItems()} item{getTotalItems() !== 1 ? "s" : ""} in your
-          cart.
+      <div className="container p-4 mx-auto text-center ">
+        <h2 className="mb-4 text-2xl font-bold">Cart Items</h2>
+        <p className="mb-6 font-sans text-gray-600">
+          You have {getTotalItems()} item{getTotalItems() !== 1 ? "s" : ""} in
+          your cart.
         </p>
       </div>
 
       {/* Cart Items */}
 
-      <div className="cart-items p-3">
+      <div className="p-3 cart-items">
         {/* Cart Item Box */}
         {cart.length > 0 ? (
           <div className="flex flex-col items-center space-y-4">
             {cart.map((item) => (
               <div
                 key={item.id}
-                className=" flex flex-col md:flex-row md:w-full overflow-hidden rounded-xl shadow-lg bg-white m-2"
+                className="flex flex-col m-2 overflow-hidden bg-white shadow-lg md:flex-row md:w-full rounded-xl"
               >
                 {/* Cart Item image */}
-                <div className="  flex items-center justify-center p-2">
+                <div className="flex items-center justify-center p-2 ">
                   <img
                     src={item.image}
                     alt={item.model}
-                    className=" w-full h-auto object-contain max-h-64"
+                    className="object-contain w-full h-auto max-h-64"
                   />
                 </div>
 
                 {/* Cart Item Content */}
-                <div className=" md:w-1/2 p-4 flex flex-col justify-evenly">
-                  <h3 className=" text-lg font-sans">
+                <div className="flex flex-col p-4 md:w-1/2 justify-evenly">
+                  <h3 className="font-sans text-lg ">
                     {item.model || item.title || item.brand}
                   </h3>
-                  <p className=" font-sans line-clamp-2 text-sm text-gray-600">
+                  <p className="font-sans text-sm text-gray-600 line-clamp-2">
                     {item.description}
                   </p>
-                  <p className=" text-green-600 font-sans font-bold mb-2">
+                  <p className="mb-2 font-sans font-bold text-green-600 ">
                     ${item.price}
                   </p>
                   {/* Quantity Controls */}
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-2">
-                      <span className="text-sm font-sans text-gray-600">Quantity:</span>
-                      <span className="text-lg font-bold text-blue-600">{item.quantity || 1}</span>
+                      <span className="font-sans text-sm text-gray-600">
+                        Quantity:
+                      </span>
+                      <span className="text-lg font-bold text-blue-600">
+                        {item.quantity || 1}
+                      </span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <button
-                        className="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-600 transition"
+                        className="px-3 py-1 text-sm text-white transition bg-blue-500 rounded-lg hover:bg-blue-600"
                         onClick={() => {
                           removeFromCart(item);
                         }}
@@ -94,7 +110,7 @@ const CartPage = () => {
                         -
                       </button>
                       <button
-                        className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-green-600 transition"
+                        className="px-3 py-1 text-sm text-white transition bg-green-500 rounded-lg hover:bg-green-600"
                         onClick={() => {
                           addToCart(item);
                         }}
@@ -103,7 +119,7 @@ const CartPage = () => {
                       </button>
                     </div>
                   </div>
-                  
+
                   <button
                     className=" bg-red-500 py-2 font-sans rounded-xl text-white text-sm hover:bg-red-600 transition w-[100px]"
                     onClick={() => {
@@ -117,7 +133,7 @@ const CartPage = () => {
             ))}
           </div>
         ) : (
-          <p className="text-gray-600 text-center font-bold">
+          <p className="font-bold text-center text-gray-600">
             Your cart is currently empty.
           </p>
         )}
